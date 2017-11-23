@@ -61,5 +61,7 @@ dependencies {
     compile(name: 'ijkplayer-java-release', ext: 'aar')
     compile 'org.greenrobot:greendao:3.2.0'
 
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 
 }

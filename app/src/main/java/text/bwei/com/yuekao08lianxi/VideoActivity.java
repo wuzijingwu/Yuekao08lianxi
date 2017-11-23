@@ -1,10 +1,14 @@
 package text.bwei.com.yuekao08lianxi;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import text.bwei.com.yuekao08lianxi.bean.MyString;
 import text.bwei.com.yuekao08lianxi.common.PlayerManager;
 
 
@@ -19,11 +23,9 @@ public class VideoActivity extends AppCompatActivity implements PlayerManager.Pl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second);
-        Intent intent=getIntent();
-        url = intent.getStringExtra("url");
-        if(url !=null){
-            initPlayer();
-        }
+
+        EventBus.getDefault().register(this);
+
     }
     private void initPlayer() {
 
@@ -67,4 +69,17 @@ public class VideoActivity extends AppCompatActivity implements PlayerManager.Pl
         player.stop();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+    public void F(MyString myString){
+        url =  myString.getString();
+        if(url !=null){
+            initPlayer();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
